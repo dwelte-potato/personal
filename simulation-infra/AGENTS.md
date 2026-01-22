@@ -57,7 +57,7 @@ This is a Docker Compose monorepo for Potato AI (Python services + a React/TypeS
   - Stylelint config: `components/ui/.stylelintrc.json` (SCSS + BEM-ish selector rules)
 - YAML: `yamlfmt` + `yamllint` (`.yamllint.yml`)
 - JSON: Prettier check/write via `210-lint-json.sh`
-- Pre-commit is configured: `pre-commit install && pre-commit run -a`
+- Pre-commit is configured: run `pre-commit run --all-files` after edits.
 
 ## Testing
 - UI: `./potato.sh test ui` or `cd components/ui && npm run test`
