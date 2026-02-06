@@ -62,8 +62,8 @@ This is a Docker Compose monorepo for Potato AI (Python services + a React/TypeS
 ## Testing
 - UI: `./potato.sh test ui` or `cd components/ui && npm run test`
 - API (pytest in Docker): `components/api/run_tests.sh [pytest args...]` (set `RUN_INTEGRATION=1` to enable integration tests)
-- Copilot (pytest in Docker): `components/copilot/run_tests.sh [pytest args...]` (reads `COPILOT_TEST_SECRETS_JSON` or `~/.potato/local-config.json`)
-- Stepper (unittest in running container): `components/stepper/100_run_tests.sh` (ensure `./potato.sh up stepper` first)
+- Copilot (pytest in Docker): `components/copilot/run_tests.sh [pytest args...]` (set `RUN_INTEGRATION=1` to enable integration tests)
+- Stepper (unittest in running container): `components/stepper/run_tests.sh` (set `RUN_INTEGRATION=1` to enable integration tests)
 
 ## Database
 - Shell: `./potato.sh db shell` (uses `100-psql.sh`)
