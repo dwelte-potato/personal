@@ -13,6 +13,7 @@ This is a Docker Compose monorepo for Potato AI (Python services + a React/TypeS
   - `api/`: FastAPI backend, OpenAPI schemas/client generation, pytest tests (`components/api/tests`)
   - `ui/`: React/TypeScript UI + SCSS, webpack, Jest, Storybook
   - `copilot/`: Python service + pytest tests (`components/copilot/tests`)
+  - `processor/`: Temporal worker for background workflows (pytest tests in `components/processor/tests`)
   - `stepper/`: workflow engine (Python; unit tests in `components/stepper/src/test`)
   - `file_router/`: Python service
   - `catalog/`: Python service/docs
@@ -36,6 +37,14 @@ This is a Docker Compose monorepo for Potato AI (Python services + a React/TypeS
 - Enter toolbox container: `./potato.sh enter devtools`
 - Rebuild containers: `./potato.sh build container [service|all]`
 - Storybook: `./potato.sh storybook` (served from `http://localhost:6006`)
+
+## Temporal (Local Dev)
+- Temporal server is wired into `docker-compose.yml` as `temporal` + `temporal_postgres`.
+- Temporal UI is available as `temporal_ui` (default: `http://localhost:8080`).
+- Start Temporal + UI: `./potato.sh up temporal_ui`.
+- Notes:
+  - Temporal auto-setup expects `DB=postgres12` (not `DB=postgresql`).
+  - Local Temporal Postgres is exposed on host port `5433` (container `5432`) to avoid conflicts.
 
 ## API Client Generation (OpenAPI)
 - `./potato.sh build api [all|python|typescript]`
@@ -64,6 +73,7 @@ This is a Docker Compose monorepo for Potato AI (Python services + a React/TypeS
 - UI: `./potato.sh test ui` or `cd components/ui && npm run test`
 - API (pytest in Docker): `components/api/run_tests.sh [pytest args...]` (set `RUN_INTEGRATION=1` to enable integration tests)
 - Copilot (pytest in Docker): `components/copilot/run_tests.sh [pytest args...]` (set `RUN_INTEGRATION=1` to enable integration tests)
+- Processor (pytest in Docker): `components/processor/run_tests.sh [pytest args...]` (set `RUN_INTEGRATION=1` to enable integration tests)
 - Stepper (unittest in running container): `components/stepper/run_tests.sh` (set `RUN_INTEGRATION=1` to enable integration tests)
 
 ## Database
@@ -77,7 +87,8 @@ This is a Docker Compose monorepo for Potato AI (Python services + a React/TypeS
   - Ensure `components/db/scripts/002-tables.sql` includes it
 
 ## Dependencies
-- Python deps live in `components/<component>/requirements.txt` (container builds use `uv` in `Dockerfile`).
+- Most Python component deps live in `components/<component>/requirements.txt` (container builds use `uv` in `Dockerfile`).
+- `processor` uses `uv` with `components/processor/pyproject.toml` + `components/processor/uv.lock` (Docker builds use `uv export --frozen`).
 - Devtools-only Python deps live in `build/devtools_requirements.txt`.
 - UI deps live in `components/ui/package.json` (use `npm`; `package-lock.json` is authoritative).
 
