@@ -71,6 +71,7 @@ This is a Docker Compose monorepo for Potato AI (Python services + a React/TypeS
 - Migrate: `./potato.sh db migrate` (Flyway; migrations live in `components/db/migrations/`)
 - Load data: `./potato.sh db load <bioprotocol|chebi|interpro|mesh|ncit|protocolsio|wiley>`
 - Reset local DB (destructive): `./potato.sh db refresh`
+- When making changes to tables, do so both with a migration and in the bootstrap script
 
 ## Dependencies
 - Python deps live in `components/<component>/requirements.txt` (container builds use `uv` in `Dockerfile`).
