@@ -55,6 +55,7 @@ This is a Docker Compose monorepo for Potato AI (Python services + a React/TypeS
   - Prettier config: `components/ui/.prettierrc.json` (tabWidth 4, single quotes)
   - ESLint flat config: `components/ui/eslint.config.mjs`
   - Stylelint config: `components/ui/.stylelintrc.json` (SCSS + BEM-ish selector rules)
+- Shell: Follow the existing formatting in the file
 - YAML: `yamlfmt` + `yamllint` (`.yamllint.yml`)
 - JSON: Prettier check/write via `210-lint-json.sh`
 - Pre-commit is configured: run `pre-commit run --all-files` after edits.
