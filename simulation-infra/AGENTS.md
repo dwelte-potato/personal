@@ -46,6 +46,11 @@ This is a Docker Compose monorepo for Potato AI (Python services + a React/TypeS
   - Temporal auto-setup expects `DB=postgres12` (not `DB=postgresql`).
   - Local Temporal Postgres is exposed on host port `5433` (container `5432`) to avoid conflicts.
 
+## Web Proxy Ports (Local Dev)
+- `web_proxy` listens on multiple ports:
+  - `80/81`: UI + `/api/*` proxy to the UI/free API sockets
+  - `82`: OpenAPI only (`/openapi.json`), proxied to `api_full` (not a general API gateway)
+
 ## API Client Generation (OpenAPI)
 - `./potato.sh build api [all|python|typescript]`
 - Output locations:
@@ -75,6 +80,13 @@ This is a Docker Compose monorepo for Potato AI (Python services + a React/TypeS
 - Copilot (pytest in Docker): `components/copilot/run_tests.sh [pytest args...]` (set `RUN_INTEGRATION=1` to enable integration tests)
 - Processor (pytest in Docker): `components/processor/run_tests.sh [pytest args...]` (set `RUN_INTEGRATION=1` to enable integration tests)
 - Stepper (unittest in running container): `components/stepper/run_tests.sh` (set `RUN_INTEGRATION=1` to enable integration tests)
+
+## Processor Notes
+- The processor talks to `api_full` over the shared unix socket volume (`/home/simuser/sockets/api.sock`) to access internal endpoints.
+- `components/processor/src/run.sh` waits for API readiness by curling `http://localhost/openapi.json` over the unix socket.
+- Temporal workflow sandboxing:
+  - Keep workflow modules deterministic; avoid importing logging/model/provider code into workflow modules.
+  - Put nondeterministic work (model calls, HTTP calls, etc.) into activities.
 
 ## Database
 - Shell: `./potato.sh db shell` (uses `100-psql.sh`)
