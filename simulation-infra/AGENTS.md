@@ -72,14 +72,16 @@ This is a Docker Compose monorepo for Potato AI (Python services + a React/TypeS
 - Shell: Follow the existing formatting in the file
 - YAML: `yamlfmt` + `yamllint` (`.yamllint.yml`)
 - JSON: Prettier check/write via `210-lint-json.sh`
-- Pre-commit is configured: run `pre-commit run --all-files` after edits.
+- Pre-commit is configured; use `pre-commit run --all-files` as the final gate for multi-area changes (see below).
 
 ## Testing
 - UI: `./potato.sh test ui` or `cd components/ui && npm run test`
-- API (pytest in Docker): `components/api/run_tests.sh [pytest args...]` (set `RUN_INTEGRATION=1` to enable integration tests)
-- Copilot (pytest in Docker): `components/copilot/run_tests.sh [pytest args...]` (set `RUN_INTEGRATION=1` to enable integration tests)
-- Processor (pytest in Docker): `components/processor/run_tests.sh [pytest args...]` (set `RUN_INTEGRATION=1` to enable integration tests)
-- Stepper (pytest in Docker): `components/stepper/run_tests.sh [pytest args...]` (set `RUN_INTEGRATION=1` to enable integration tests)
+- Backend tests run in Docker and accept optional `pytest` args.
+- Set `RUN_INTEGRATION=1` to enable integration tests.
+- API: `components/api/run_tests.sh [pytest args...]`
+- Copilot: `components/copilot/run_tests.sh [pytest args...]`
+- Processor: `components/processor/run_tests.sh [pytest args...]`
+- Stepper: `components/stepper/run_tests.sh [pytest args...]`
 
 ## Post-Change Validation (Required)
 - After making changes, run checks for every touched component before handing off.
@@ -99,7 +101,7 @@ This is a Docker Compose monorepo for Potato AI (Python services + a React/TypeS
     - `components/processor/run_tests.sh [relevant pytest args...]` (or full suite)
   - Stepper changes:
     - `./potato.sh lint python`
-    - `components/stepper/run_tests.sh`
+    - `components/stepper/run_tests.sh [relevant pytest args...]` (or full suite)
   - DB/OpenAPI/endpoint schema changes:
     - If Flyway migrations were added/changed: `./potato.sh db migrate`
     - `./potato.sh build api python`
