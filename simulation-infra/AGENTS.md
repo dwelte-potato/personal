@@ -81,6 +81,33 @@ This is a Docker Compose monorepo for Potato AI (Python services + a React/TypeS
 - Processor (pytest in Docker): `components/processor/run_tests.sh [pytest args...]` (set `RUN_INTEGRATION=1` to enable integration tests)
 - Stepper (unittest in running container): `components/stepper/run_tests.sh` (set `RUN_INTEGRATION=1` to enable integration tests)
 
+## Post-Change Validation (Required)
+- After making changes, run checks for every touched component before handing off.
+- Do not rely on `./potato.sh test all` for backend coverage; run backend suites directly.
+- Minimum checks by area:
+  - UI changes:
+    - `./potato.sh lint ui`
+    - `./potato.sh test ui`
+  - API changes:
+    - `./potato.sh lint python`
+    - `components/api/run_tests.sh [relevant pytest args...]` (or full suite)
+  - Copilot changes:
+    - `./potato.sh lint python`
+    - `components/copilot/run_tests.sh [relevant pytest args...]` (or full suite)
+  - Processor changes:
+    - `./potato.sh lint python`
+    - `components/processor/run_tests.sh [relevant pytest args...]` (or full suite)
+  - Stepper changes:
+    - `./potato.sh lint python`
+    - `components/stepper/run_tests.sh`
+  - DB/OpenAPI/endpoint schema changes:
+    - If Flyway migrations were added/changed: `./potato.sh db migrate`
+    - `./potato.sh build api python`
+    - `./potato.sh build api typescript`
+    - Re-run affected API/UI tests afterwards
+- Final gate for multi-area changes:
+  - `pre-commit run --all-files`
+
 ## Processor Notes
 - The processor talks to `api_full` over the shared unix socket volume (`/home/simuser/sockets/api.sock`) to access internal endpoints.
 - `components/processor/src/run.sh` waits for API readiness by curling `http://localhost/openapi.json` over the unix socket.
