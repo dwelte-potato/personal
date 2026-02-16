@@ -14,7 +14,7 @@ This is a Docker Compose monorepo for Potato AI (Python services + a React/TypeS
   - `ui/`: React/TypeScript UI + SCSS, webpack, Jest, Storybook
   - `copilot/`: Python service + pytest tests (`components/copilot/tests`)
   - `processor/`: Temporal worker for background workflows (pytest tests in `components/processor/tests`)
-  - `stepper/`: workflow engine (Python; unit tests in `components/stepper/src/test`)
+  - `stepper/`: workflow engine (Python; pytest tests in `components/stepper/tests`)
   - `file_router/`: Python service
   - `catalog/`: Python service/docs
   - `shared_py/`: shared Python library used across services
@@ -79,7 +79,7 @@ This is a Docker Compose monorepo for Potato AI (Python services + a React/TypeS
 - API (pytest in Docker): `components/api/run_tests.sh [pytest args...]` (set `RUN_INTEGRATION=1` to enable integration tests)
 - Copilot (pytest in Docker): `components/copilot/run_tests.sh [pytest args...]` (set `RUN_INTEGRATION=1` to enable integration tests)
 - Processor (pytest in Docker): `components/processor/run_tests.sh [pytest args...]` (set `RUN_INTEGRATION=1` to enable integration tests)
-- Stepper (unittest in running container): `components/stepper/run_tests.sh` (set `RUN_INTEGRATION=1` to enable integration tests)
+- Stepper (pytest in Docker): `components/stepper/run_tests.sh [pytest args...]` (set `RUN_INTEGRATION=1` to enable integration tests)
 
 ## Post-Change Validation (Required)
 - After making changes, run checks for every touched component before handing off.
